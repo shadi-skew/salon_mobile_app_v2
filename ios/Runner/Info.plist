@@ -45,6 +45,11 @@
 	<string>We need camera access to take a photo of your current hair for styling recommendations.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>We need photo library access to select a photo of your current hair for styling recommendations.</string>
+	<key>NSAppTransportSecurity</key>
+	<dict>
+		<key>NSAllowsArbitraryLoads</key>
+		<true/>
+	</dict>
 	<key>CADisableMinimumFrameDurationOnPhone</key>
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>

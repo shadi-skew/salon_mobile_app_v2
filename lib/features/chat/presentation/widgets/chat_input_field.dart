@@ -1,4 +1,7 @@
+import 'dart:io';
+import 'dart:typed_data';
 import 'package:flutter/material.dart';
+import 'package:image/image.dart' as img;
 import 'package:image_picker/image_picker.dart';
 
 class ChatInputField extends StatefulWidget {
@@ -117,9 +120,15 @@ class _ChatInputFieldState extends State<ChatInputField> {
         maxWidth: 1024,
         maxHeight: 1024,
         imageQuality: 80,
+        preferredCameraDevice: CameraDevice.front,
       );
       if (picked != null) {
-        widget.onSendImage(picked.path);
+        if (source == ImageSource.camera) {
+          final fixedPath = await _flipImage(picked.path);
+          widget.onSendImage(fixedPath);
+        } else {
+          widget.onSendImage(picked.path);
+        }
       }
     } catch (e) {
       if (mounted) {
@@ -128,6 +137,18 @@ class _ChatInputFieldState extends State<ChatInputField> {
         );
       }
     }
+  }
+
+  Future<String> _flipImage(String path) async {
+    final bytes = await File(path).readAsBytes();
+    final original = img.decodeImage(Uint8List.fromList(bytes));
+    if (original == null) return path;
+
+    final flipped = img.flipHorizontal(original);
+    final encoded = img.encodeJpg(flipped, quality: 85);
+    final fixedFile = File(path);
+    await fixedFile.writeAsBytes(encoded);
+    return fixedFile.path;
   }
 
   @override

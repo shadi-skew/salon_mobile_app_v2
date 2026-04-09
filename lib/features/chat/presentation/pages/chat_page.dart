@@ -5,8 +5,8 @@ import 'package:salon_mobile_app_v2/features/chat/presentation/manager/chat_cubi
 import 'package:salon_mobile_app_v2/features/chat/presentation/manager/chat_state.dart';
 import 'package:salon_mobile_app_v2/features/chat/presentation/widgets/chat_bubble.dart';
 import 'package:salon_mobile_app_v2/features/chat/presentation/widgets/chat_input_field.dart';
-import 'package:salon_mobile_app_v2/features/chat/presentation/widgets/color_options_widget.dart';
-import 'package:salon_mobile_app_v2/features/chat/presentation/widgets/hairstyle_options_widget.dart';
+import 'package:salon_mobile_app_v2/features/chat/presentation/widgets/hair_color_options_widget.dart';
+import 'package:salon_mobile_app_v2/features/chat/presentation/widgets/image_generating_shimmer.dart';
 import 'package:salon_mobile_app_v2/features/chat/presentation/widgets/typing_indicator.dart';
 
 class ChatPage extends StatefulWidget {
@@ -142,20 +142,71 @@ class _ChatPageState extends State<ChatPage> {
                 child: ListView.builder(
                   controller: _scrollController,
                   padding: const EdgeInsets.only(top: 8, bottom: 8),
-                  itemCount:
-                      state.messages.length + (state.isTyping ? 1 : 0),
+                  itemCount: state.messages.length +
+                      (state.isTyping || state.isGeneratingImage ? 1 : 0),
                   itemBuilder: (context, index) {
-                    if (index == state.messages.length && state.isTyping) {
+                    // Trailing indicator slot
+                    if (index == state.messages.length) {
+                      if (state.isGeneratingImage) {
+                        return const ImageGeneratingShimmer();
+                      }
                       return const TypingIndicator();
                     }
-                    return _buildMessageWidget(context, state.messages[index]);
+                    final message = state.messages[index];
+                    if (message.type == ChatMessageType.hairColors) {
+                      return HairColorOptionsWidget(
+                        colors: message.hairColors ?? [],
+                        selectedColorName: message.selectedColorName,
+                        onSelected: (color) {
+                          context.read<ChatCubit>().selectHairColor(
+                                messageId: message.id,
+                                color: color,
+                              );
+                        },
+                      );
+                    }
+                    return ChatBubble(message: message);
                   },
                 ),
               ),
 
+              // Error banner
+              if (state.error != null)
+                Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 16,
+                    vertical: 8,
+                  ),
+                  color: Colors.red.shade50,
+                  child: Row(
+                    children: [
+                      Icon(Icons.error_outline,
+                          size: 16, color: Colors.red.shade400),
+                      const SizedBox(width: 8),
+                      Expanded(
+                        child: Text(
+                          state.error!,
+                          style: TextStyle(
+                            fontSize: 13,
+                            color: Colors.red.shade700,
+                          ),
+                        ),
+                      ),
+                      GestureDetector(
+                        onTap: () => context
+                            .read<ChatCubit>()
+                            .emit(state.copyWith(error: null)),
+                        child: Icon(Icons.close,
+                            size: 16, color: Colors.red.shade400),
+                      ),
+                    ],
+                  ),
+                ),
+
               // Input
               ChatInputField(
-                enabled: !state.isTyping,
+                enabled: !state.isTyping && !state.isGeneratingImage,
                 onSendText: (text) =>
                     context.read<ChatCubit>().sendTextMessage(text),
                 onSendImage: (path) =>
@@ -166,39 +217,5 @@ class _ChatPageState extends State<ChatPage> {
         },
       ),
     );
-  }
-
-  Widget _buildMessageWidget(BuildContext context, ChatMessage message) {
-    switch (message.type) {
-      case ChatMessageType.text:
-      case ChatMessageType.image:
-        return ChatBubble(message: message);
-
-      case ChatMessageType.hairstyleOptions:
-        return HairstyleOptionsWidget(
-          options: message.hairstyleOptions ?? [],
-          selectedOptionId: message.selectedOptionId,
-          onSelected: (optionId) {
-            context.read<ChatCubit>().selectOption(
-                  messageId: message.id,
-                  optionId: optionId,
-                  optionType: 'hairstyle',
-                );
-          },
-        );
-
-      case ChatMessageType.colorOptions:
-        return ColorOptionsWidget(
-          options: message.colorOptions ?? [],
-          selectedOptionId: message.selectedOptionId,
-          onSelected: (optionId) {
-            context.read<ChatCubit>().selectOption(
-                  messageId: message.id,
-                  optionId: optionId,
-                  optionType: 'color',
-                );
-          },
-        );
-    }
   }
 }

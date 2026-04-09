@@ -52,8 +52,9 @@ dependencies:
   # Local Storage
   shared_preferences: ^2.3.5
 
-  # Image Picker
+  # Image Picker & Processing
   image_picker: ^1.1.2
+  image: ^4.5.3
 
 dev_dependencies:
   flutter_test:

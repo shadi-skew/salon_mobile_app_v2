@@ -5,7 +5,7 @@ class AppConfig {
 
   static const String baseUrl = String.fromEnvironment(
     'BASE_URL',
-    defaultValue: 'https://dev.api.example.com/',
+    defaultValue: 'http://3.234.189.178:5001',
   );
 
   static const String environment = String.fromEnvironment(
