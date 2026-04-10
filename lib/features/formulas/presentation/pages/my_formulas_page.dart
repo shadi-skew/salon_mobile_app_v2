@@ -198,8 +198,9 @@ class _MyFormulasViewState extends State<_MyFormulasView> {
   Widget _buildFormulaList() {
     return BlocBuilder<FormulaCubit, FormulaState>(
       builder: (context, state) {
+        final bottomSafe = MediaQuery.viewPaddingOf(context).bottom;
         return ListView.separated(
-          padding: const EdgeInsets.fromLTRB(20, 0, 20, 24),
+          padding: EdgeInsets.fromLTRB(20, 0, 20, 24 + bottomSafe + 12),
           itemCount: state.displayedFormulas.length,
           separatorBuilder: (_, index) => const SizedBox(height: 14),
           itemBuilder: (context, index) {

@@ -64,6 +64,11 @@ class _FormulaCalculatorViewState extends State<_FormulaCalculatorView> {
     }
   }
 
+  EdgeInsets _stepScrollPadding(BuildContext context) {
+    final bottomInset = MediaQuery.viewPaddingOf(context).bottom;
+    return EdgeInsets.fromLTRB(20, 0, 20, bottomInset + 12);
+  }
+
   Future<void> _calculateFormula(BuildContext context) async {
     final cubitState = context.read<CalculatorCubit>().state;
     if (!cubitState.isComplete) return;
@@ -184,7 +189,7 @@ class _FormulaCalculatorViewState extends State<_FormulaCalculatorView> {
       buildWhen: (prev, curr) => prev.selectedBrand != curr.selectedBrand,
       builder: (context, state) {
         return SingleChildScrollView(
-          padding: const EdgeInsets.symmetric(horizontal: 20),
+          padding: _stepScrollPadding(context),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -237,7 +242,7 @@ class _FormulaCalculatorViewState extends State<_FormulaCalculatorView> {
       buildWhen: (prev, curr) => prev.currentLevel != curr.currentLevel,
       builder: (context, state) {
         return SingleChildScrollView(
-          padding: const EdgeInsets.symmetric(horizontal: 20),
+          padding: _stepScrollPadding(context),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -291,7 +296,7 @@ class _FormulaCalculatorViewState extends State<_FormulaCalculatorView> {
       buildWhen: (prev, curr) => prev.targetLevel != curr.targetLevel,
       builder: (context, state) {
         return SingleChildScrollView(
-          padding: const EdgeInsets.symmetric(horizontal: 20),
+          padding: _stepScrollPadding(context),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [

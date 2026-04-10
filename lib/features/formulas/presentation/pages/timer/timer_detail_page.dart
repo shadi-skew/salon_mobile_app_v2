@@ -42,11 +42,12 @@ class _TimerDetailView extends StatelessWidget {
       listenWhen: (prev, curr) => !prev.isCompleted && curr.isCompleted,
       listener: (context, state) => _showCompletionDialog(context),
       builder: (context, state) {
+        final bottomInset = MediaQuery.viewPaddingOf(context).bottom;
         return Scaffold(
           backgroundColor: ColorManager.lightGrey,
           appBar: _buildAppBar(context, state),
           body: SingleChildScrollView(
-            padding: const EdgeInsets.fromLTRB(20, 20, 20, 32),
+            padding: EdgeInsets.fromLTRB(20, 20, 20, 32 + bottomInset + 12),
             child: Column(
               children: [
                 ChairInfoCard(session: state.session),

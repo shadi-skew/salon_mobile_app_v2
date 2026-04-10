@@ -102,6 +102,7 @@ class _FormulaResultsPageState extends State<FormulaResultsPage> {
 
   @override
   Widget build(BuildContext context) {
+    final bottomInset = MediaQuery.viewPaddingOf(context).bottom;
     return Scaffold(
       backgroundColor: ColorManager.lightGrey,
       body: SafeArea(
@@ -215,7 +216,7 @@ class _FormulaResultsPageState extends State<FormulaResultsPage> {
             // Content
             Expanded(
               child: SingleChildScrollView(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
+                padding: EdgeInsets.fromLTRB(20, 0, 20, 24 + bottomInset + 12),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
