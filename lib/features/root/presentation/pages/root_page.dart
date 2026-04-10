@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:salon_mobile_app_v2/core/api/api_consumer.dart';
+import 'package:salon_mobile_app_v2/core/resources/app_routes_names.dart';
 import 'package:salon_mobile_app_v2/features/chat/data/data_sources/chat_api_service.dart';
 import 'package:salon_mobile_app_v2/features/chat/presentation/manager/chat_cubit.dart';
 import 'package:salon_mobile_app_v2/features/chat/presentation/pages/chat_page.dart';
@@ -18,6 +20,7 @@ class RootPage extends StatefulWidget {
 class _RootPageState extends State<RootPage> {
   int _currentIndex = 0;
   late final ChatCubit _chatCubit;
+  String? _lastHandledHomeResetUri;
 
   @override
   void initState() {
@@ -25,6 +28,28 @@ class _RootPageState extends State<RootPage> {
     _chatCubit = ChatCubit(
       apiService: RemoteChatApiService(getIt<ApiConsumer>()),
     );
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    final uri = GoRouterState.of(context).uri;
+    if (uri.queryParameters['home'] != '1') {
+      _lastHandledHomeResetUri = null;
+      return;
+    }
+    final full = uri.toString();
+    if (_lastHandledHomeResetUri == full) return;
+    _lastHandledHomeResetUri = full;
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) return;
+      setState(() => _currentIndex = 0);
+      final router = GoRouter.of(context);
+      if (router.state.uri.queryParameters['home'] == '1') {
+        router.go(AppRoutesNames.root);
+      }
+    });
   }
 
   @override
@@ -37,17 +62,21 @@ class _RootPageState extends State<RootPage> {
     setState(() => _currentIndex = 1);
   }
 
+  void _goToFormulas() {
+    context.pushNamed(AppRoutesNames.myFormulas);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: IndexedStack(
         index: _currentIndex,
         children: [
-          HomePage(onNavigateToChat: _goToChat),
-          BlocProvider.value(
-            value: _chatCubit,
-            child: const ChatPage(),
+          HomePage(
+            onNavigateToChat: _goToChat,
+            onNavigateToFormulas: _goToFormulas,
           ),
+          BlocProvider.value(value: _chatCubit, child: const ChatPage()),
           const ProfilePage(),
         ],
       ),

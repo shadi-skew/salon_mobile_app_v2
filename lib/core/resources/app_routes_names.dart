@@ -12,4 +12,9 @@ class AppRoutesNames {
   static const String aiStylist = 'aiStylist';
   static const String hairstyleDetail = 'hairstyleDetail';
   static const String styleResult = 'styleResult';
+
+  static const String myFormulas = 'myFormulas';
+  static const String formulaCalculator = 'formulaCalculator';
+  static const String formulaResults = 'formulaResults';
+  static const String timerDetail = 'timerDetail';
 }
