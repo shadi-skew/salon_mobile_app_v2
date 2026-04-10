@@ -131,6 +131,34 @@ class HomePage extends StatelessWidget {
               ),
               const SizedBox(height: 28),
 
+              // Upcoming appointments
+              const Text(
+                'Upcoming Appointments',
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.w700,
+                  color: ColorManager.blackTitle,
+                  letterSpacing: -0.3,
+                ),
+              ),
+              const SizedBox(height: 14),
+              _AppointmentCard(
+                service: 'Haircut & Styling',
+                stylist: 'Sarah Johnson',
+                date: 'Tomorrow',
+                time: '10:30 AM',
+                icon: Icons.content_cut_rounded,
+              ),
+              const SizedBox(height: 10),
+              _AppointmentCard(
+                service: 'Hair Coloring',
+                stylist: 'Emily Davis',
+                date: 'Apr 15',
+                time: '2:00 PM',
+                icon: Icons.palette_rounded,
+              ),
+              const SizedBox(height: 28),
+
               // Section title
               const Text(
                 'Services',
@@ -266,6 +294,99 @@ class _ServiceCard extends StatelessWidget {
             ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+class _AppointmentCard extends StatelessWidget {
+  const _AppointmentCard({
+    required this.service,
+    required this.stylist,
+    required this.date,
+    required this.time,
+    required this.icon,
+  });
+
+  final String service;
+  final String stylist;
+  final String date;
+  final String time;
+  final IconData icon;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(18),
+        border: Border.all(color: Colors.grey.shade200),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.03),
+            blurRadius: 10,
+            offset: const Offset(0, 2),
+          ),
+        ],
+      ),
+      child: Row(
+        children: [
+          Container(
+            padding: const EdgeInsets.all(12),
+            decoration: BoxDecoration(
+              color: const Color(0xFFC06C84).withValues(alpha: 0.1),
+              borderRadius: BorderRadius.circular(14),
+            ),
+            child: Icon(icon, color: const Color(0xFFC06C84), size: 24),
+          ),
+          const SizedBox(width: 14),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  service,
+                  style: const TextStyle(
+                    fontSize: 15,
+                    fontWeight: FontWeight.w700,
+                    color: ColorManager.blackTitle,
+                    letterSpacing: -0.2,
+                  ),
+                ),
+                const SizedBox(height: 3),
+                Text(
+                  'with $stylist',
+                  style: TextStyle(
+                    fontSize: 13,
+                    color: Colors.grey.shade500,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              Text(
+                date,
+                style: const TextStyle(
+                  fontSize: 13,
+                  fontWeight: FontWeight.w700,
+                  color: ColorManager.blackTitle,
+                ),
+              ),
+              const SizedBox(height: 2),
+              Text(
+                time,
+                style: TextStyle(
+                  fontSize: 12,
+                  color: Colors.grey.shade500,
+                ),
+              ),
+            ],
+          ),
+        ],
       ),
     );
   }
