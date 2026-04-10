@@ -13,19 +13,8 @@ class AppRoutesNames {
   static const String hairstyleDetail = 'hairstyleDetail';
   static const String styleResult = 'styleResult';
 
-  /// My Formulas list (Formulas tab entry point)
   static const String myFormulas = 'myFormulas';
-  static const String myFormulasPath = '/my_formulas';
-
-  /// All-in-one PageView calculator (primary flow — manages its own cubit)
   static const String formulaCalculator = 'formulaCalculator';
-  static const String formulaCalculatorPath = '/formula_calculator';
-
-  /// Results screen (extra: `Map<String,dynamic>` with currentLevel, targetLevel, brand)
   static const String formulaResults = 'formulaResults';
-  static const String formulaResultsPath = '/formula_results';
-
-  /// Full timer detail screen (extra: TimerSession object)
   static const String timerDetail = 'timerDetail';
-  static const String timerDetailPath = '/formulas/timer';
 }

@@ -37,7 +37,7 @@ class RoutesManager {
         ),
 
         GoRoute(
-          path: AppRoutesNames.myFormulasPath,
+          path: '/my_formulas',
           name: AppRoutesNames.myFormulas,
           pageBuilder: (context, state) => CupertinoPage(
             key: state.pageKey,
@@ -46,7 +46,7 @@ class RoutesManager {
           ),
         ),
         GoRoute(
-          path: AppRoutesNames.formulaCalculatorPath,
+          path: '/formula_calculator',
           name: AppRoutesNames.formulaCalculator,
           pageBuilder: (context, state) => CupertinoPage(
             key: state.pageKey,
@@ -58,7 +58,7 @@ class RoutesManager {
           ),
         ),
         GoRoute(
-          path: AppRoutesNames.formulaResultsPath,
+          path: '/formula_results',
           name: AppRoutesNames.formulaResults,
           pageBuilder: (context, state) {
             final args = state.extra as Map<String, dynamic>? ?? const {};
@@ -76,7 +76,7 @@ class RoutesManager {
           },
         ),
         GoRoute(
-          path: AppRoutesNames.timerDetailPath,
+          path: '/formulas/timer',
           name: AppRoutesNames.timerDetail,
           pageBuilder: (context, state) {
             final session = state.extra as TimerSession?;

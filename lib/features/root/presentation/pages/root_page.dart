@@ -63,7 +63,7 @@ class _RootPageState extends State<RootPage> {
   }
 
   void _goToFormulas() {
-    context.push(AppRoutesNames.myFormulasPath);
+    context.pushNamed(AppRoutesNames.myFormulas);
   }
 
   @override
