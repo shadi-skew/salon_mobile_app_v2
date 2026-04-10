@@ -55,6 +55,15 @@ class ColorManager {
   // Separator
   static const Color separator = Color(0xFFE6E6E6);
 
+  // AI Stylist Colors
+  static const Color green = Color(0xFF0F6A6A);
+  static const Color background = Color(0xFFF2F2F2);
+  static const Color grayText = Color(0xFF6A7282);
+  static const Color blackText = Color(0xFF0A0A0A);
+  static const Color pink = Color(0xFFFFDCED);
+  static const Color darkOrange = Color(0xFFE87156);
+  static const Color yellow = Color(0xFFFFFBD5);
+
   // Hair Color Levels (1–10, used in Formula feature)
   static const Color hairLevel1 = Color(0xFF1A1A1A); // Black
   static const Color hairLevel2 = Color(0xFF3D2817); // Very Dark Brown
@@ -69,9 +78,6 @@ class ColorManager {
 
   // Formula feature status colors
   static const Color warningYellow = Color(0xFFFFE082);
-  static const Color green = Color(0xFF0F6A6A);
   static const Color bgColor = Color(0xFFF2F2F2);
-  static const Color yellow = Color(0xFFFFFBD5);
-  static const Color darkOrange = Color(0xFFE87156);
   static const Color lightOrange = Color(0xFFEACDC7);
 }
