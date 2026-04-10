@@ -4,6 +4,8 @@ import 'package:salon_mobile_app_v2/core/resources/app_routes_names.dart';
 import 'package:salon_mobile_app_v2/core/resources/color_manager.dart';
 import 'package:salon_mobile_app_v2/features/ai_stylist/presentation/widgets/ai_settings_bottom_sheet.dart';
 
+enum _StyleCategory { cuts, colors, styles }
+
 class _HairstyleItem {
   final String title;
   final String description;
@@ -11,6 +13,7 @@ class _HairstyleItem {
   final String duration;
   final Color backgroundColor;
   final String imagePath;
+  final _StyleCategory category;
 
   const _HairstyleItem({
     required this.title,
@@ -19,10 +22,12 @@ class _HairstyleItem {
     required this.duration,
     required this.backgroundColor,
     required this.imagePath,
+    required this.category,
   });
 }
 
 const _hairstyles = [
+  // Cuts
   _HairstyleItem(
     title: 'Long Layered Cut',
     description: 'Face-framing layers with long length',
@@ -30,6 +35,7 @@ const _hairstyles = [
     duration: '45 min',
     backgroundColor: ColorManager.pink,
     imagePath: 'assets/images/hairstyle_pink.png',
+    category: _StyleCategory.cuts,
   ),
   _HairstyleItem(
     title: 'Blunt Bob',
@@ -38,6 +44,7 @@ const _hairstyles = [
     duration: '30 min',
     backgroundColor: ColorManager.darkOrange,
     imagePath: 'assets/images/hairstyle_orange.png',
+    category: _StyleCategory.cuts,
   ),
   _HairstyleItem(
     title: 'Textured Pixie',
@@ -46,7 +53,9 @@ const _hairstyles = [
     duration: '40 min',
     backgroundColor: ColorManager.green,
     imagePath: 'assets/images/hairstyle_green.png',
+    category: _StyleCategory.cuts,
   ),
+  // Colors
   _HairstyleItem(
     title: 'Curtain Bangs',
     description: 'Soft face-framing bangs parted in center',
@@ -54,7 +63,18 @@ const _hairstyles = [
     duration: '25 min',
     backgroundColor: Color(0xFFD5C8F0),
     imagePath: 'assets/images/hairstyle_purple.png',
+    category: _StyleCategory.colors,
   ),
+  _HairstyleItem(
+    title: 'Balayage Blend',
+    description: 'Hand-painted highlights for a natural look',
+    difficulty: 'Hard',
+    duration: '90 min',
+    backgroundColor: ColorManager.darkOrange,
+    imagePath: 'assets/images/hairstyle_orange.png',
+    category: _StyleCategory.colors,
+  ),
+  // Styles
   _HairstyleItem(
     title: 'Shaggy Lob',
     description: 'Shoulder-length with choppy layers',
@@ -62,6 +82,7 @@ const _hairstyles = [
     duration: '35 min',
     backgroundColor: ColorManager.pink,
     imagePath: 'assets/images/hairstyle_pink.png',
+    category: _StyleCategory.styles,
   ),
   _HairstyleItem(
     title: 'Asymmetric Cut',
@@ -70,6 +91,16 @@ const _hairstyles = [
     duration: '50 min',
     backgroundColor: ColorManager.darkOrange,
     imagePath: 'assets/images/hairstyle_orange.png',
+    category: _StyleCategory.styles,
+  ),
+  _HairstyleItem(
+    title: 'Beach Waves',
+    description: 'Effortless, natural waves for any occasion',
+    difficulty: 'Easy',
+    duration: '20 min',
+    backgroundColor: ColorManager.green,
+    imagePath: 'assets/images/hairstyle_green.png',
+    category: _StyleCategory.styles,
   ),
 ];
 
@@ -84,14 +115,26 @@ class _AiStylistPageState extends State<AiStylistPage> {
   int _selectedTabIndex = 0;
   final _tabs = const ['All Styles', 'Cuts', 'Colors', 'Styles'];
 
+  static const _tabCategories = <int, _StyleCategory?>{
+    0: null, // All Styles
+    1: _StyleCategory.cuts,
+    2: _StyleCategory.colors,
+    3: _StyleCategory.styles,
+  };
+
+  List<_HairstyleItem> get _filteredHairstyles {
+    final category = _tabCategories[_selectedTabIndex];
+    if (category == null) return _hairstyles;
+    return _hairstyles.where((h) => h.category == category).toList();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: ColorManager.background,
-      body: SafeArea(
-        child: Column(
+      body: Column(
           children: [
-            const SizedBox(height: 16),
+            SizedBox(height: MediaQuery.of(context).padding.top + 16),
             // Header
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -150,7 +193,8 @@ class _AiStylistPageState extends State<AiStylistPage> {
                   return Expanded(
                     child: GestureDetector(
                       onTap: () => setState(() => _selectedTabIndex = index),
-                      child: Container(
+                      child: AnimatedContainer(
+                        duration: const Duration(milliseconds: 200),
                         margin: EdgeInsets.only(
                           right: index < _tabs.length - 1 ? 8 : 0,
                         ),
@@ -158,19 +202,34 @@ class _AiStylistPageState extends State<AiStylistPage> {
                         decoration: BoxDecoration(
                           color: isSelected
                               ? ColorManager.green
-                              : const Color(0xFFFAFAFA),
+                              : ColorManager.white,
                           borderRadius: BorderRadius.circular(100),
+                          border: Border.all(
+                            color: isSelected
+                                ? ColorManager.green
+                                : Colors.grey.shade200,
+                          ),
+                          boxShadow: isSelected
+                              ? [
+                                  BoxShadow(
+                                    color: ColorManager.green
+                                        .withValues(alpha: 0.25),
+                                    blurRadius: 8,
+                                    offset: const Offset(0, 2),
+                                  ),
+                                ]
+                              : null,
                         ),
                         alignment: Alignment.center,
                         child: Text(
                           _tabs[index],
                           style: TextStyle(
                             fontSize: 14,
-                            fontWeight: FontWeight.w500,
+                            fontWeight: FontWeight.w600,
                             color: isSelected
                                 ? Colors.white
-                                : ColorManager.grayText,
-                            height: 21 / 14,
+                                : Colors.grey.shade600,
+                            letterSpacing: -0.1,
                           ),
                         ),
                       ),
@@ -183,31 +242,31 @@ class _AiStylistPageState extends State<AiStylistPage> {
             // Hairstyle grid
             Expanded(
               child: GridView.builder(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
+                padding: const EdgeInsets.fromLTRB(20, 0, 20, 32),
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 2,
                   crossAxisSpacing: 8,
                   mainAxisSpacing: 16,
                   childAspectRatio: 0.66,
                 ),
-                itemCount: _hairstyles.length,
+                itemCount: _filteredHairstyles.length,
                 itemBuilder: (context, index) {
+                  final item = _filteredHairstyles[index];
                   return GestureDetector(
                     onTap: () => context.pushNamed(
                       AppRoutesNames.hairstyleDetail,
                       extra: {
-                        'title': _hairstyles[index].title,
-                        'cardCount': _hairstyles.length,
+                        'title': item.title,
+                        'cardCount': _filteredHairstyles.length,
                       },
                     ),
-                    child: _HairstyleCard(item: _hairstyles[index]),
+                    child: _HairstyleCard(item: item),
                   );
                 },
               ),
             ),
           ],
         ),
-      ),
     );
   }
 }

@@ -190,7 +190,7 @@ class _CameraPageState extends State<CameraPage> with WidgetsBindingObserver {
 
         // Top bar
         Positioned(
-          top: MediaQuery.of(context).padding.top + 8,
+          top: MediaQuery.of(context).padding.top + 40,
           left: 16,
           right: 16,
           child: Row(
@@ -274,7 +274,7 @@ class _CameraPageState extends State<CameraPage> with WidgetsBindingObserver {
 
         // Top bar
         Positioned(
-          top: MediaQuery.of(context).padding.top + 8,
+          top: MediaQuery.of(context).padding.top + 40,
           left: 16,
           child: _CircleButton(
             icon: Icons.close,
