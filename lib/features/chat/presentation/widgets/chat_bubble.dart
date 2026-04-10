@@ -1,8 +1,10 @@
 import 'dart:io';
 
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:salon_mobile_app_v2/features/chat/data/models/chat_models.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:salon_mobile_app_v2/features/chat/presentation/pages/image_viewer_page.dart';
 
 class ChatBubble extends StatelessWidget {
@@ -193,7 +195,7 @@ class _ImageBubble extends StatelessWidget {
   void _openViewer(BuildContext context) {
     Navigator.push(
       context,
-      MaterialPageRoute(
+      CupertinoPageRoute(
         builder: (_) => ImageViewerPage(
           imageUrl: message.imageUrl,
           imagePath: message.imagePath,
@@ -210,14 +212,13 @@ class _ImageBubble extends StatelessWidget {
         fit: BoxFit.cover,
         height: 280,
         width: double.infinity,
-        placeholder: (context, url) => Container(
-          height: 280,
-          color: Colors.grey.shade100,
-          child: const Center(
-            child: CircularProgressIndicator(
-              strokeWidth: 2,
-              color: Color(0xFF0D8B8B),
-            ),
+        placeholder: (context, url) => Shimmer.fromColors(
+          baseColor: Colors.grey.shade200,
+          highlightColor: Colors.grey.shade50,
+          child: Container(
+            height: 280,
+            width: double.infinity,
+            color: Colors.white,
           ),
         ),
         errorWidget: (context, url, error) => Container(

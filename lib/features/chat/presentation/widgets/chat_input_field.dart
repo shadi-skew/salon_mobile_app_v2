@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:salon_mobile_app_v2/features/chat/presentation/pages/camera_page.dart';
@@ -117,7 +118,7 @@ class _ChatInputFieldState extends State<ChatInputField> {
         if (!mounted) return;
         final path = await Navigator.push<String>(
           context,
-          MaterialPageRoute(builder: (_) => const CameraPage()),
+          CupertinoPageRoute(builder: (_) => const CameraPage()),
         );
         if (path != null && mounted) {
           widget.onSendImage(path);
@@ -144,14 +145,12 @@ class _ChatInputFieldState extends State<ChatInputField> {
 
   @override
   Widget build(BuildContext context) {
-    final bottomPadding = MediaQuery.of(context).padding.bottom;
-
     return Container(
-      padding: EdgeInsets.only(
+      padding: const EdgeInsets.only(
         left: 10,
         right: 10,
         top: 8,
-        bottom: bottomPadding > 0 ? bottomPadding : 10,
+        bottom: 10,
       ),
       decoration: BoxDecoration(
         color: Colors.white,
@@ -192,6 +191,7 @@ class _ChatInputFieldState extends State<ChatInputField> {
               focusNode: _focusNode,
               enabled: widget.enabled,
               textCapitalization: TextCapitalization.sentences,
+              textInputAction: TextInputAction.done,
               maxLines: 5,
               minLines: 1,
               style: const TextStyle(

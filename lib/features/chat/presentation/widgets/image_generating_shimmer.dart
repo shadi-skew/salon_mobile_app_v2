@@ -57,52 +57,14 @@ class ImageGeneratingShimmer extends StatelessWidget {
               ),
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(20),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    // Shimmer image area
-                    Shimmer.fromColors(
-                      baseColor: Colors.grey.shade200,
-                      highlightColor: Colors.grey.shade50,
-                      child: Container(
-                        height: 280,
-                        width: double.infinity,
-                        color: Colors.white,
-                      ),
-                    ),
-                    // Label
-                    Container(
-                      width: double.infinity,
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 16,
-                        vertical: 12,
-                      ),
-                      color: const Color(0xFFFAFAFC),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          SizedBox(
-                            width: 16,
-                            height: 16,
-                            child: CircularProgressIndicator(
-                              strokeWidth: 2,
-                              color: const Color(0xFF0D8B8B).withValues(alpha: 0.6),
-                            ),
-                          ),
-                          const SizedBox(width: 10),
-                          Text(
-                            'Generating your look...',
-                            style: TextStyle(
-                              fontSize: 13,
-                              fontWeight: FontWeight.w600,
-                              color: Colors.grey.shade600,
-                              letterSpacing: -0.2,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
+                child: Shimmer.fromColors(
+                  baseColor: Colors.grey.shade200,
+                  highlightColor: Colors.grey.shade50,
+                  child: Container(
+                    height: 280,
+                    width: double.infinity,
+                    color: Colors.white,
+                  ),
                 ),
               ),
             ),
