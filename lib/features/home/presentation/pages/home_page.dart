@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:salon_mobile_app_v2/core/resources/color_manager.dart';
 
 class HomePage extends StatelessWidget {
-  const HomePage({super.key, this.onNavigateToChat});
+  const HomePage({super.key, this.onNavigateToChat, this.onNavigateToFormulas});
 
   final VoidCallback? onNavigateToChat;
+  final VoidCallback? onNavigateToFormulas;
 
   @override
   Widget build(BuildContext context) {
@@ -185,7 +186,7 @@ class HomePage extends StatelessWidget {
                 title: 'Color Formula',
                 subtitle: 'Custom color formula for your dream look',
                 color: const Color(0xFF34ACB7),
-                onTap: onNavigateToChat,
+                onTap: onNavigateToFormulas,
               ),
               const SizedBox(height: 12),
               _ServiceCard(
@@ -357,10 +358,7 @@ class _AppointmentCard extends StatelessWidget {
                 const SizedBox(height: 3),
                 Text(
                   'with $stylist',
-                  style: TextStyle(
-                    fontSize: 13,
-                    color: Colors.grey.shade500,
-                  ),
+                  style: TextStyle(fontSize: 13, color: Colors.grey.shade500),
                 ),
               ],
             ),
@@ -379,10 +377,7 @@ class _AppointmentCard extends StatelessWidget {
               const SizedBox(height: 2),
               Text(
                 time,
-                style: TextStyle(
-                  fontSize: 12,
-                  color: Colors.grey.shade500,
-                ),
+                style: TextStyle(fontSize: 12, color: Colors.grey.shade500),
               ),
             ],
           ),
