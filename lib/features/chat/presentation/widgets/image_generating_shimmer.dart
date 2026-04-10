@@ -18,14 +18,14 @@ class ImageGeneratingShimmer extends StatelessWidget {
             margin: const EdgeInsets.only(right: 8, bottom: 2),
             decoration: BoxDecoration(
               gradient: const LinearGradient(
-                colors: [Color(0xFF0D8B8B), Color(0xFF14ABAB)],
+                colors: [Color(0xFF34ACB7), Color(0xFF5CC4CD)],
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
               ),
               shape: BoxShape.circle,
               boxShadow: [
                 BoxShadow(
-                  color: const Color(0xFF0D8B8B).withValues(alpha: 0.3),
+                  color: const Color(0xFF34ACB7).withValues(alpha: 0.3),
                   blurRadius: 6,
                   offset: const Offset(0, 2),
                 ),

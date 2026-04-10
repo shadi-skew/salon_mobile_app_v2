@@ -22,15 +22,15 @@ class ProfilePage extends StatelessWidget {
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
                     colors: [
-                      const Color(0xFF0F6A6A).withValues(alpha: 0.06),
-                      const Color(0xFF0F6A6A).withValues(alpha: 0.02),
+                      const Color(0xFF34ACB7).withValues(alpha: 0.06),
+                      const Color(0xFF34ACB7).withValues(alpha: 0.02),
                     ],
                     begin: Alignment.topCenter,
                     end: Alignment.bottomCenter,
                   ),
                   borderRadius: BorderRadius.circular(24),
                   border: Border.all(
-                    color: const Color(0xFF0F6A6A).withValues(alpha: 0.08),
+                    color: const Color(0xFF34ACB7).withValues(alpha: 0.08),
                   ),
                 ),
                 child: Column(
@@ -39,17 +39,17 @@ class ProfilePage extends StatelessWidget {
                       width: 80,
                       height: 80,
                       decoration: BoxDecoration(
-                        color: const Color(0xFF0F6A6A).withValues(alpha: 0.1),
+                        color: const Color(0xFF34ACB7).withValues(alpha: 0.1),
                         shape: BoxShape.circle,
                         border: Border.all(
-                          color: const Color(0xFF0F6A6A).withValues(alpha: 0.2),
+                          color: const Color(0xFF34ACB7).withValues(alpha: 0.2),
                           width: 2,
                         ),
                       ),
                       child: const Icon(
                         Icons.person_rounded,
                         size: 40,
-                        color: Color(0xFF0F6A6A),
+                        color: Color(0xFF34ACB7),
                       ),
                     ),
                     const SizedBox(height: 16),
@@ -76,7 +76,7 @@ class ProfilePage extends StatelessWidget {
                       child: ElevatedButton(
                         onPressed: () {},
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color(0xFF0F6A6A),
+                          backgroundColor: const Color(0xFF34ACB7),
                           foregroundColor: Colors.white,
                           elevation: 0,
                           padding: const EdgeInsets.symmetric(vertical: 14),
@@ -222,13 +222,13 @@ class _MenuSection extends StatelessWidget {
                           Container(
                             padding: const EdgeInsets.all(8),
                             decoration: BoxDecoration(
-                              color: const Color(0xFF0F6A6A)
+                              color: const Color(0xFF34ACB7)
                                   .withValues(alpha: 0.08),
                               borderRadius: BorderRadius.circular(10),
                             ),
                             child: Icon(
                               item.icon,
-                              color: const Color(0xFF0F6A6A),
+                              color: const Color(0xFF34ACB7),
                               size: 20,
                             ),
                           ),

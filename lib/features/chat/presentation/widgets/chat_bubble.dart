@@ -49,14 +49,14 @@ class _TextBubble extends StatelessWidget {
               margin: const EdgeInsets.only(right: 8, bottom: 2),
               decoration: BoxDecoration(
                 gradient: const LinearGradient(
-                  colors: [Color(0xFF0D8B8B), Color(0xFF14ABAB)],
+                  colors: [Color(0xFF34ACB7), Color(0xFF5CC4CD)],
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
                 ),
                 shape: BoxShape.circle,
                 boxShadow: [
                   BoxShadow(
-                    color: const Color(0xFF0D8B8B).withValues(alpha: 0.3),
+                    color: const Color(0xFF34ACB7).withValues(alpha: 0.3),
                     blurRadius: 6,
                     offset: const Offset(0, 2),
                   ),
@@ -76,12 +76,12 @@ class _TextBubble extends StatelessWidget {
               decoration: BoxDecoration(
                 gradient: isUser
                     ? const LinearGradient(
-                        colors: [Color(0xFF0D8B8B), Color(0xFF0A7A7A)],
+                        colors: [Color(0xFF34ACB7), Color(0xFF2A8F98)],
                         begin: Alignment.topLeft,
                         end: Alignment.bottomRight,
                       )
                     : null,
-                color: isUser ? null : const Color(0xFFEFF3F4),
+                color: isUser ? null : const Color(0xFFE8F6F8),
                 borderRadius: BorderRadius.only(
                   topLeft: const Radius.circular(20),
                   topRight: const Radius.circular(20),
@@ -91,7 +91,7 @@ class _TextBubble extends StatelessWidget {
                 boxShadow: isUser
                     ? [
                         BoxShadow(
-                          color: const Color(0xFF0D8B8B).withValues(alpha: 0.2),
+                          color: const Color(0xFF34ACB7).withValues(alpha: 0.2),
                           blurRadius: 8,
                           offset: const Offset(0, 2),
                         ),
@@ -143,14 +143,14 @@ class _ImageBubble extends StatelessWidget {
               margin: const EdgeInsets.only(right: 8, bottom: 2),
               decoration: BoxDecoration(
                 gradient: const LinearGradient(
-                  colors: [Color(0xFF0D8B8B), Color(0xFF14ABAB)],
+                  colors: [Color(0xFF34ACB7), Color(0xFF5CC4CD)],
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
                 ),
                 shape: BoxShape.circle,
                 boxShadow: [
                   BoxShadow(
-                    color: const Color(0xFF0D8B8B).withValues(alpha: 0.3),
+                    color: const Color(0xFF34ACB7).withValues(alpha: 0.3),
                     blurRadius: 6,
                     offset: const Offset(0, 2),
                   ),

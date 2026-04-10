@@ -42,11 +42,11 @@ class HairColorOptionsWidget extends StatelessWidget {
                 Container(
                   padding: const EdgeInsets.all(6),
                   decoration: BoxDecoration(
-                    color: const Color(0xFF0D8B8B).withValues(alpha: 0.08),
+                    color: const Color(0xFF34ACB7).withValues(alpha: 0.08),
                     borderRadius: BorderRadius.circular(8),
                   ),
                   child: const Icon(Icons.palette_rounded,
-                      size: 16, color: Color(0xFF0D8B8B)),
+                      size: 16, color: Color(0xFF34ACB7)),
                 ),
                 const SizedBox(width: 8),
                 const Text(

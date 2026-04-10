@@ -48,7 +48,7 @@ class _ChatPageState extends State<ChatPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF8FAFA),
+      backgroundColor: const Color(0xFFF6FCFC),
       appBar: AppBar(
         titleSpacing: 0,
         title: Row(
@@ -59,14 +59,14 @@ class _ChatPageState extends State<ChatPage> {
               height: 38,
               decoration: BoxDecoration(
                 gradient: const LinearGradient(
-                  colors: [Color(0xFF0D8B8B), Color(0xFF14ABAB)],
+                  colors: [Color(0xFF34ACB7), Color(0xFF5CC4CD)],
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
                 ),
                 borderRadius: BorderRadius.circular(13),
                 boxShadow: [
                   BoxShadow(
-                    color: const Color(0xFF0D8B8B).withValues(alpha: 0.25),
+                    color: const Color(0xFF34ACB7).withValues(alpha: 0.25),
                     blurRadius: 8,
                     offset: const Offset(0, 2),
                   ),
@@ -149,14 +149,14 @@ class _ChatPageState extends State<ChatPage> {
                       vertical: 5,
                     ),
                     decoration: BoxDecoration(
-                      color: const Color(0xFF0D8B8B).withValues(alpha: 0.06),
+                      color: const Color(0xFF34ACB7).withValues(alpha: 0.06),
                       borderRadius: BorderRadius.circular(12),
                     ),
                     child: const Text(
                       'Today',
                       style: TextStyle(
                         fontSize: 12,
-                        color: Color(0xFF0D8B8B),
+                        color: Color(0xFF34ACB7),
                         fontWeight: FontWeight.w600,
                       ),
                     ),

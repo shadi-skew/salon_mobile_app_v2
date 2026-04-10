@@ -47,14 +47,14 @@ class HomePage extends StatelessWidget {
                   padding: const EdgeInsets.all(24),
                   decoration: BoxDecoration(
                     gradient: const LinearGradient(
-                      colors: [Color(0xFF0F6A6A), Color(0xFF1A8F8F)],
+                      colors: [Color(0xFF34ACB7), Color(0xFF5CC4CD)],
                       begin: Alignment.topLeft,
                       end: Alignment.bottomRight,
                     ),
                     borderRadius: BorderRadius.circular(22),
                     boxShadow: [
                       BoxShadow(
-                        color: const Color(0xFF0F6A6A).withValues(alpha: 0.3),
+                        color: const Color(0xFF34ACB7).withValues(alpha: 0.3),
                         blurRadius: 20,
                         offset: const Offset(0, 8),
                       ),
@@ -113,14 +113,14 @@ class HomePage extends StatelessWidget {
                               style: TextStyle(
                                 fontSize: 14,
                                 fontWeight: FontWeight.w700,
-                                color: Color(0xFF0F6A6A),
+                                color: Color(0xFF34ACB7),
                               ),
                             ),
                             SizedBox(width: 6),
                             Icon(
                               Icons.arrow_forward_rounded,
                               size: 18,
-                              color: Color(0xFF0F6A6A),
+                              color: Color(0xFF34ACB7),
                             ),
                           ],
                         ),
@@ -176,7 +176,7 @@ class HomePage extends StatelessWidget {
                 icon: Icons.content_cut_rounded,
                 title: 'Hairstyle Change',
                 subtitle: 'Get AI-powered hairstyle recommendations',
-                color: const Color(0xFFE87156),
+                color: const Color(0xFFFF7A5C),
                 onTap: onNavigateToChat,
               ),
               const SizedBox(height: 12),
@@ -184,7 +184,7 @@ class HomePage extends StatelessWidget {
                 icon: Icons.palette_rounded,
                 title: 'Color Formula',
                 subtitle: 'Custom color formula for your dream look',
-                color: const Color(0xFF8B6914),
+                color: const Color(0xFF34ACB7),
                 onTap: onNavigateToChat,
               ),
               const SizedBox(height: 12),
@@ -192,7 +192,7 @@ class HomePage extends StatelessWidget {
                 icon: Icons.auto_fix_high_rounded,
                 title: 'Full Makeover',
                 subtitle: 'Complete style + color transformation',
-                color: const Color(0xFF7B4FBF),
+                color: const Color(0xFFFF7A5C),
                 onTap: onNavigateToChat,
               ),
               const SizedBox(height: 32),
@@ -335,10 +335,10 @@ class _AppointmentCard extends StatelessWidget {
           Container(
             padding: const EdgeInsets.all(12),
             decoration: BoxDecoration(
-              color: const Color(0xFFC06C84).withValues(alpha: 0.1),
+              color: const Color(0xFF34ACB7).withValues(alpha: 0.1),
               borderRadius: BorderRadius.circular(14),
             ),
-            child: Icon(icon, color: const Color(0xFFC06C84), size: 24),
+            child: Icon(icon, color: const Color(0xFF34ACB7), size: 24),
           ),
           const SizedBox(width: 14),
           Expanded(

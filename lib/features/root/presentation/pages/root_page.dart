@@ -131,7 +131,7 @@ class _NavItem extends StatelessWidget {
                     key: ValueKey(isActive),
                     size: 24,
                     color: isActive
-                        ? const Color(0xFF0F6A6A)
+                        ? const Color(0xFF34ACB7)
                         : Colors.grey.shade400,
                   ),
                 ),
@@ -143,7 +143,7 @@ class _NavItem extends StatelessWidget {
                       width: 8,
                       height: 8,
                       decoration: const BoxDecoration(
-                        color: Color(0xFFE87156),
+                        color: Color(0xFFFF7A5C),
                         shape: BoxShape.circle,
                       ),
                     ),
@@ -157,7 +157,7 @@ class _NavItem extends StatelessWidget {
                 fontSize: 11,
                 fontWeight: isActive ? FontWeight.w700 : FontWeight.w500,
                 color: isActive
-                    ? const Color(0xFF0F6A6A)
+                    ? const Color(0xFF34ACB7)
                     : Colors.grey.shade400,
               ),
             ),
