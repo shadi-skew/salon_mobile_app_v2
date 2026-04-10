@@ -1,5 +1,7 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:salon_mobile_app_v2/features/chat/presentation/pages/camera_page.dart';
 
 class ChatInputField extends StatefulWidget {
   const ChatInputField({
@@ -112,14 +114,25 @@ class _ChatInputFieldState extends State<ChatInputField> {
     if (source == null) return;
 
     try {
-      final picked = await _imagePicker.pickImage(
-        source: source,
-        maxWidth: 1024,
-        maxHeight: 1024,
-        imageQuality: 80,
-      );
-      if (picked != null) {
-        widget.onSendImage(picked.path);
+      if (source == ImageSource.camera) {
+        if (!mounted) return;
+        final path = await Navigator.push<String>(
+          context,
+          CupertinoPageRoute(builder: (_) => const CameraPage()),
+        );
+        if (path != null && mounted) {
+          widget.onSendImage(path);
+        }
+      } else {
+        final picked = await _imagePicker.pickImage(
+          source: ImageSource.gallery,
+          maxWidth: 1024,
+          maxHeight: 1024,
+          imageQuality: 80,
+        );
+        if (picked != null) {
+          widget.onSendImage(picked.path);
+        }
       }
     } catch (e) {
       if (mounted) {
@@ -133,89 +146,130 @@ class _ChatInputFieldState extends State<ChatInputField> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.only(
-        left: 12,
-        right: 12,
-        top: 10,
-        bottom: MediaQuery.of(context).padding.bottom + 10,
+      padding: const EdgeInsets.only(
+        left: 10,
+        right: 10,
+        top: 8,
+        bottom: 10,
       ),
       decoration: BoxDecoration(
         color: Colors.white,
-        border: Border(
-          top: BorderSide(color: Colors.grey.shade200, width: 0.5),
-        ),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.05),
+            blurRadius: 12,
+            offset: const Offset(0, -3),
+          ),
+        ],
       ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
           // Camera button
-          Container(
-            margin: const EdgeInsets.only(bottom: 2),
-            decoration: BoxDecoration(
-              color: widget.enabled
-                  ? const Color(0xFF0F6A6A).withValues(alpha: 0.08)
-                  : Colors.grey.shade100,
-              borderRadius: BorderRadius.circular(22),
-            ),
+          Padding(
+            padding: const EdgeInsets.only(bottom: 4),
             child: IconButton(
               onPressed: widget.enabled ? _pickImage : null,
-              icon: const Icon(Icons.camera_alt_rounded, size: 22),
-              color: const Color(0xFF0F6A6A),
+              icon: const Icon(Icons.camera_alt_rounded, size: 21),
+              color: const Color(0xFF0D8B8B),
               disabledColor: Colors.grey.shade400,
-              padding: const EdgeInsets.all(10),
+              padding: const EdgeInsets.all(8),
               constraints: const BoxConstraints(),
+              style: IconButton.styleFrom(
+                backgroundColor: widget.enabled
+                    ? const Color(0xFF0D8B8B).withValues(alpha: 0.08)
+                    : Colors.transparent,
+                shape: const CircleBorder(),
+              ),
             ),
           ),
-          const SizedBox(width: 10),
-          // Text field
+          const SizedBox(width: 6),
+          // Text field in pill container
           Expanded(
-            child: Container(
-              decoration: BoxDecoration(
-                color: const Color(0xFFF5F5F7),
-                borderRadius: BorderRadius.circular(24),
+            child: TextField(
+              controller: _controller,
+              focusNode: _focusNode,
+              enabled: widget.enabled,
+              textCapitalization: TextCapitalization.sentences,
+              textInputAction: TextInputAction.done,
+              maxLines: 5,
+              minLines: 1,
+              style: const TextStyle(
+                fontSize: 15,
+                height: 1.4,
+                letterSpacing: -0.1,
               ),
-              child: TextField(
-                controller: _controller,
-                focusNode: _focusNode,
-                enabled: widget.enabled,
-                textCapitalization: TextCapitalization.sentences,
-                maxLines: 5,
-                minLines: 1,
-                style: const TextStyle(fontSize: 15, height: 1.4),
-                onChanged: (_) => setState(() {}),
-                onSubmitted: (_) => _send(),
-                decoration: InputDecoration(
-                  hintText: 'Type a message...',
-                  hintStyle: TextStyle(
-                    color: Colors.grey.shade400,
-                    fontSize: 15,
-                  ),
-                  border: InputBorder.none,
-                  contentPadding: const EdgeInsets.symmetric(
-                    horizontal: 18,
-                    vertical: 12,
-                  ),
+              onChanged: (_) => setState(() {}),
+              onSubmitted: (_) => _send(),
+              decoration: InputDecoration(
+                hintText: 'Type a message...',
+                hintStyle: TextStyle(
+                  color: Colors.grey.shade400,
+                  fontSize: 15,
+                  letterSpacing: -0.1,
+                ),
+                filled: true,
+                fillColor: const Color(0xFFF4F6F6),
+                isDense: true,
+                contentPadding: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 10,
+                ),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(22),
+                  borderSide: BorderSide.none,
+                ),
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(22),
+                  borderSide: BorderSide.none,
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(22),
+                  borderSide: BorderSide.none,
+                ),
+                disabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(22),
+                  borderSide: BorderSide.none,
                 ),
               ),
             ),
           ),
-          const SizedBox(width: 10),
+          const SizedBox(width: 8),
           // Send button
-          Container(
-            margin: const EdgeInsets.only(bottom: 2),
-            decoration: BoxDecoration(
-              color: (widget.enabled && _hasText)
-                  ? const Color(0xFF0F6A6A)
-                  : Colors.grey.shade200,
-              borderRadius: BorderRadius.circular(22),
-            ),
-            child: IconButton(
-              onPressed: (widget.enabled && _hasText) ? _send : null,
-              icon: const Icon(Icons.arrow_upward_rounded, size: 22),
-              color: Colors.white,
-              disabledColor: Colors.grey.shade400,
-              padding: const EdgeInsets.all(10),
-              constraints: const BoxConstraints(),
+          Padding(
+            padding: const EdgeInsets.only(bottom: 4),
+            child: AnimatedContainer(
+              duration: const Duration(milliseconds: 200),
+              decoration: BoxDecoration(
+                gradient: (widget.enabled && _hasText)
+                    ? const LinearGradient(
+                        colors: [Color(0xFF0D8B8B), Color(0xFF0A7A7A)],
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                      )
+                    : null,
+                color: (widget.enabled && _hasText)
+                    ? null
+                    : Colors.grey.shade300,
+                shape: BoxShape.circle,
+                boxShadow: (widget.enabled && _hasText)
+                    ? [
+                        BoxShadow(
+                          color: const Color(0xFF0D8B8B).withValues(alpha: 0.3),
+                          blurRadius: 6,
+                          offset: const Offset(0, 2),
+                        ),
+                      ]
+                    : null,
+              ),
+              child: IconButton(
+                onPressed: (widget.enabled && _hasText) ? _send : null,
+                icon: const Icon(Icons.arrow_upward_rounded, size: 21),
+                color: Colors.white,
+                disabledColor: Colors.white70,
+                padding: const EdgeInsets.all(8),
+                constraints: const BoxConstraints(),
+              ),
             ),
           ),
         ],
@@ -242,22 +296,22 @@ class _PickerOption extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.symmetric(vertical: 20),
         decoration: BoxDecoration(
-          color: const Color(0xFF0F6A6A).withValues(alpha: 0.06),
+          color: const Color(0xFF0D8B8B).withValues(alpha: 0.06),
           borderRadius: BorderRadius.circular(16),
           border: Border.all(
-            color: const Color(0xFF0F6A6A).withValues(alpha: 0.12),
+            color: const Color(0xFF0D8B8B).withValues(alpha: 0.12),
           ),
         ),
         child: Column(
           children: [
-            Icon(icon, color: const Color(0xFF0F6A6A), size: 32),
+            Icon(icon, color: const Color(0xFF0D8B8B), size: 32),
             const SizedBox(height: 8),
             Text(
               label,
               style: const TextStyle(
                 fontSize: 14,
                 fontWeight: FontWeight.w600,
-                color: Color(0xFF0F6A6A),
+                color: Color(0xFF0D8B8B),
               ),
             ),
           ],

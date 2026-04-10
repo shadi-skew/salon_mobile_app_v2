@@ -5,8 +5,8 @@ import 'package:salon_mobile_app_v2/features/chat/presentation/manager/chat_cubi
 import 'package:salon_mobile_app_v2/features/chat/presentation/manager/chat_state.dart';
 import 'package:salon_mobile_app_v2/features/chat/presentation/widgets/chat_bubble.dart';
 import 'package:salon_mobile_app_v2/features/chat/presentation/widgets/chat_input_field.dart';
-import 'package:salon_mobile_app_v2/features/chat/presentation/widgets/color_options_widget.dart';
-import 'package:salon_mobile_app_v2/features/chat/presentation/widgets/hairstyle_options_widget.dart';
+import 'package:salon_mobile_app_v2/features/chat/presentation/widgets/hair_color_options_widget.dart';
+import 'package:salon_mobile_app_v2/features/chat/presentation/widgets/image_generating_shimmer.dart';
 import 'package:salon_mobile_app_v2/features/chat/presentation/widgets/typing_indicator.dart';
 
 class ChatPage extends StatefulWidget {
@@ -48,22 +48,29 @@ class _ChatPageState extends State<ChatPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: const Color(0xFFF8FAFA),
       appBar: AppBar(
         titleSpacing: 0,
         title: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
             Container(
-              width: 36,
-              height: 36,
+              width: 38,
+              height: 38,
               decoration: BoxDecoration(
                 gradient: const LinearGradient(
-                  colors: [Color(0xFF0F6A6A), Color(0xFF1A8A8A)],
+                  colors: [Color(0xFF0D8B8B), Color(0xFF14ABAB)],
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
                 ),
-                borderRadius: BorderRadius.circular(12),
+                borderRadius: BorderRadius.circular(13),
+                boxShadow: [
+                  BoxShadow(
+                    color: const Color(0xFF0D8B8B).withValues(alpha: 0.25),
+                    blurRadius: 8,
+                    offset: const Offset(0, 2),
+                  ),
+                ],
               ),
               child: const Icon(
                 Icons.auto_awesome,
@@ -72,24 +79,44 @@ class _ChatPageState extends State<ChatPage> {
               ),
             ),
             const SizedBox(width: 12),
-            const Column(
+            Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
+                const Text(
                   'Salon Assistant',
                   style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w700,
                     letterSpacing: -0.3,
+                    color: Color(0xFF1A1A2E),
                   ),
                 ),
-                Text(
-                  'Online',
-                  style: TextStyle(
-                    fontSize: 12,
-                    fontWeight: FontWeight.w400,
-                    color: Color(0xFF4CAF50),
-                  ),
+                Row(
+                  children: [
+                    Container(
+                      width: 7,
+                      height: 7,
+                      decoration: BoxDecoration(
+                        color: const Color(0xFF34C759),
+                        shape: BoxShape.circle,
+                        boxShadow: [
+                          BoxShadow(
+                            color: const Color(0xFF34C759).withValues(alpha: 0.4),
+                            blurRadius: 4,
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(width: 5),
+                    const Text(
+                      'Online',
+                      style: TextStyle(
+                        fontSize: 12,
+                        fontWeight: FontWeight.w500,
+                        color: Color(0xFF34C759),
+                      ),
+                    ),
+                  ],
                 ),
               ],
             ),
@@ -103,7 +130,7 @@ class _ChatPageState extends State<ChatPage> {
           preferredSize: const Size.fromHeight(0.5),
           child: Container(
             height: 0.5,
-            color: Colors.grey.shade200,
+            color: Colors.grey.shade100,
           ),
         ),
       ),
@@ -122,15 +149,15 @@ class _ChatPageState extends State<ChatPage> {
                       vertical: 5,
                     ),
                     decoration: BoxDecoration(
-                      color: Colors.grey.shade100,
+                      color: const Color(0xFF0D8B8B).withValues(alpha: 0.06),
                       borderRadius: BorderRadius.circular(12),
                     ),
-                    child: Text(
+                    child: const Text(
                       'Today',
                       style: TextStyle(
                         fontSize: 12,
-                        color: Colors.grey.shade500,
-                        fontWeight: FontWeight.w500,
+                        color: Color(0xFF0D8B8B),
+                        fontWeight: FontWeight.w600,
                       ),
                     ),
                   ),
@@ -142,20 +169,71 @@ class _ChatPageState extends State<ChatPage> {
                 child: ListView.builder(
                   controller: _scrollController,
                   padding: const EdgeInsets.only(top: 8, bottom: 8),
-                  itemCount:
-                      state.messages.length + (state.isTyping ? 1 : 0),
+                  itemCount: state.messages.length +
+                      (state.isTyping || state.isGeneratingImage ? 1 : 0),
                   itemBuilder: (context, index) {
-                    if (index == state.messages.length && state.isTyping) {
+                    // Trailing indicator slot
+                    if (index == state.messages.length) {
+                      if (state.isGeneratingImage) {
+                        return const ImageGeneratingShimmer();
+                      }
                       return const TypingIndicator();
                     }
-                    return _buildMessageWidget(context, state.messages[index]);
+                    final message = state.messages[index];
+                    if (message.type == ChatMessageType.hairColors) {
+                      return HairColorOptionsWidget(
+                        colors: message.hairColors ?? [],
+                        selectedColorName: message.selectedColorName,
+                        onSelected: (color) {
+                          context.read<ChatCubit>().selectHairColor(
+                                messageId: message.id,
+                                color: color,
+                              );
+                        },
+                      );
+                    }
+                    return ChatBubble(message: message);
                   },
                 ),
               ),
 
+              // Error banner
+              if (state.error != null)
+                Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 16,
+                    vertical: 8,
+                  ),
+                  color: Colors.red.shade50,
+                  child: Row(
+                    children: [
+                      Icon(Icons.error_outline,
+                          size: 16, color: Colors.red.shade400),
+                      const SizedBox(width: 8),
+                      Expanded(
+                        child: Text(
+                          state.error!,
+                          style: TextStyle(
+                            fontSize: 13,
+                            color: Colors.red.shade700,
+                          ),
+                        ),
+                      ),
+                      GestureDetector(
+                        onTap: () => context
+                            .read<ChatCubit>()
+                            .emit(state.copyWith(error: null)),
+                        child: Icon(Icons.close,
+                            size: 16, color: Colors.red.shade400),
+                      ),
+                    ],
+                  ),
+                ),
+
               // Input
               ChatInputField(
-                enabled: !state.isTyping,
+                enabled: !state.isTyping && !state.isGeneratingImage,
                 onSendText: (text) =>
                     context.read<ChatCubit>().sendTextMessage(text),
                 onSendImage: (path) =>
@@ -166,39 +244,5 @@ class _ChatPageState extends State<ChatPage> {
         },
       ),
     );
-  }
-
-  Widget _buildMessageWidget(BuildContext context, ChatMessage message) {
-    switch (message.type) {
-      case ChatMessageType.text:
-      case ChatMessageType.image:
-        return ChatBubble(message: message);
-
-      case ChatMessageType.hairstyleOptions:
-        return HairstyleOptionsWidget(
-          options: message.hairstyleOptions ?? [],
-          selectedOptionId: message.selectedOptionId,
-          onSelected: (optionId) {
-            context.read<ChatCubit>().selectOption(
-                  messageId: message.id,
-                  optionId: optionId,
-                  optionType: 'hairstyle',
-                );
-          },
-        );
-
-      case ChatMessageType.colorOptions:
-        return ColorOptionsWidget(
-          options: message.colorOptions ?? [],
-          selectedOptionId: message.selectedOptionId,
-          onSelected: (optionId) {
-            context.read<ChatCubit>().selectOption(
-                  messageId: message.id,
-                  optionId: optionId,
-                  optionType: 'color',
-                );
-          },
-        );
-    }
   }
 }

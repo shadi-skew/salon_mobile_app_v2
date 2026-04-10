@@ -52,8 +52,14 @@ dependencies:
   # Local Storage
   shared_preferences: ^2.3.5
 
-  # Image Picker
+  # Image Picker & Processing
   image_picker: ^1.1.2
+  image: ^4.5.3
+
+  # Camera
+  camera: ^0.11.1
+  path_provider: ^2.1.5
+  vector_math: ^2.1.4
 
 dev_dependencies:
   flutter_test:

@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:salon_mobile_app_v2/core/api/api_consumer.dart';
 import 'package:salon_mobile_app_v2/features/chat/data/data_sources/chat_api_service.dart';
 import 'package:salon_mobile_app_v2/features/chat/presentation/manager/chat_cubit.dart';
 import 'package:salon_mobile_app_v2/features/chat/presentation/pages/chat_page.dart';
 import 'package:salon_mobile_app_v2/features/home/presentation/pages/home_page.dart';
 import 'package:salon_mobile_app_v2/features/profile/presentation/pages/profile_page.dart';
+import 'package:salon_mobile_app_v2/injection.dart';
 
 class RootPage extends StatefulWidget {
   const RootPage({super.key});
@@ -20,7 +22,9 @@ class _RootPageState extends State<RootPage> {
   @override
   void initState() {
     super.initState();
-    _chatCubit = ChatCubit(apiService: MockChatApiService());
+    _chatCubit = ChatCubit(
+      apiService: RemoteChatApiService(getIt<ApiConsumer>()),
+    );
   }
 
   @override

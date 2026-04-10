@@ -10,26 +10,42 @@ import 'package:salon_mobile_app_v2/features/chat/presentation/manager/chat_stat
 class ChatCubit extends Cubit<ChatState> {
   ChatCubit({required ChatApiService apiService})
       : _apiService = apiService,
-        _sessionId = DateTime.now().millisecondsSinceEpoch.toString(),
         super(const ChatState());
 
   final ChatApiService _apiService;
-  final String _sessionId;
+  String? _sessionId;
   int _messageCounter = 0;
 
   String _nextId() => 'msg_${_messageCounter++}';
 
-  /// Start conversation — called when chat page opens
+  /// Start conversation — sends first empty message to get AI greeting
   Future<void> startConversation() async {
-    if (state.messages.isNotEmpty) return; // Already started
+    if (state.messages.isNotEmpty) return;
 
     emit(state.copyWith(isTyping: true));
 
     try {
       final response = await _apiService.sendMessage(
-        ChatApiRequest(sessionId: _sessionId, message: ''),
+        SendMessageRequest(
+          content: '',
+          sessionId: _sessionId,
+        ),
       );
-      _addAiMessages(response.messages);
+
+      _sessionId = response.sessionId;
+
+      final aiMsg = ChatMessage(
+        id: _nextId(),
+        isUser: false,
+        type: ChatMessageType.text,
+        text: response.content,
+        imageUrl: response.imageUrl,
+      );
+
+      emit(state.copyWith(
+        messages: [...state.messages, aiMsg],
+        isTyping: false,
+      ));
     } catch (e) {
       if (kDebugMode) debugPrint('Chat error: $e');
       emit(state.copyWith(isTyping: false, error: 'Failed to connect'));
@@ -40,7 +56,6 @@ class ChatCubit extends Cubit<ChatState> {
   Future<void> sendTextMessage(String text) async {
     if (text.trim().isEmpty) return;
 
-    // Add user message
     final userMsg = ChatMessage(
       id: _nextId(),
       isUser: true,
@@ -56,23 +71,28 @@ class ChatCubit extends Cubit<ChatState> {
 
     try {
       final response = await _apiService.sendMessage(
-        ChatApiRequest(sessionId: _sessionId, message: text.trim()),
+        SendMessageRequest(
+          content: text.trim(),
+          sessionId: _sessionId,
+        ),
       );
-      _addAiMessages(response.messages);
+
+      _sessionId ??= response.sessionId;
+      _addAiMessage(response);
     } catch (e) {
       if (kDebugMode) debugPrint('Chat error: $e');
       emit(state.copyWith(isTyping: false, error: 'Failed to send message'));
     }
   }
 
-  /// Send an image
-  Future<void> sendImage(String imagePath) async {
-    // Add user image message
+  /// Send an image (with optional text)
+  Future<void> sendImage(String imagePath, {String? text}) async {
     final userMsg = ChatMessage(
       id: _nextId(),
       isUser: true,
       type: ChatMessageType.image,
       imagePath: imagePath,
+      text: text,
     );
 
     emit(state.copyWith(
@@ -82,95 +102,128 @@ class ChatCubit extends Cubit<ChatState> {
     ));
 
     try {
-      // Convert image to base64 for API
-      String? imageBase64;
-      try {
-        final bytes = await File(imagePath).readAsBytes();
-        imageBase64 = base64Encode(bytes);
-      } catch (_) {
-        imageBase64 = 'mock_image_data';
-      }
+      final bytes = await File(imagePath).readAsBytes();
+      final imageBase64 = base64Encode(bytes);
 
       final response = await _apiService.sendMessage(
-        ChatApiRequest(
+        SendMessageRequest(
+          content: text ?? '',
           sessionId: _sessionId,
-          imageBase64: imageBase64,
+          image: imageBase64,
         ),
       );
-      _addAiMessages(response.messages);
+
+      _sessionId ??= response.sessionId;
+      _addAiMessage(response);
     } catch (e) {
       if (kDebugMode) debugPrint('Chat error: $e');
       emit(state.copyWith(isTyping: false, error: 'Failed to send image'));
     }
   }
 
-  /// Handle option selection (hairstyle or color card tapped)
-  Future<void> selectOption({
+  /// Start a new conversation (reset session)
+  void resetConversation() {
+    _sessionId = null;
+    _messageCounter = 0;
+    emit(const ChatState());
+  }
+
+  /// Handle color selection — sends the chosen color name as a text message
+  Future<void> selectHairColor({
     required String messageId,
-    required String optionId,
-    required String optionType,
+    required HairColor color,
   }) async {
-    // Update the message with the selected option
+    // Mark the color message as selected (locks it)
     final updatedMessages = state.messages.map((msg) {
       if (msg.id == messageId) {
-        return msg.copyWith(selectedOptionId: optionId);
+        return msg.copyWith(selectedColorName: color.name);
       }
       return msg;
     }).toList();
 
-    emit(state.copyWith(messages: updatedMessages, isTyping: true));
+    emit(state.copyWith(messages: updatedMessages));
 
-    try {
-      final response = await _apiService.sendMessage(
-        ChatApiRequest(
-          sessionId: _sessionId,
-          selectedOptionId: optionId,
-          selectedOptionType: optionType,
-        ),
-      );
-      _addAiMessages(response.messages);
-    } catch (e) {
-      if (kDebugMode) debugPrint('Chat error: $e');
-      emit(state.copyWith(isTyping: false, error: 'Failed to process selection'));
-    }
+    // Send the selection as a text message to the backend
+    await sendTextMessage(color.name);
   }
 
-  /// Convert API response messages to ChatMessages and add them
-  void _addAiMessages(List<ChatResponseMessage> responseMessages) {
-    final newMessages = <ChatMessage>[];
+  void _addAiMessage(MessageResponse response) {
+    final messages = <ChatMessage>[...state.messages];
 
-    for (final rm in responseMessages) {
-      switch (rm.type) {
-        case 'text':
-          newMessages.add(ChatMessage(
-            id: _nextId(),
-            isUser: false,
-            type: ChatMessageType.text,
-            text: rm.text,
-          ));
-          break;
-        case 'hairstyle_options':
-          newMessages.add(ChatMessage(
-            id: _nextId(),
-            isUser: false,
-            type: ChatMessageType.hairstyleOptions,
-            hairstyleOptions: rm.hairstyleOptions,
-          ));
-          break;
-        case 'color_options':
-          newMessages.add(ChatMessage(
-            id: _nextId(),
-            isUser: false,
-            type: ChatMessageType.colorOptions,
-            colorOptions: rm.colorOptions,
-          ));
-          break;
-      }
+    // Add text message
+    if (response.content.isNotEmpty) {
+      messages.add(ChatMessage(
+        id: _nextId(),
+        isUser: false,
+        type: ChatMessageType.text,
+        text: response.content,
+      ));
+    }
+
+    // Add hair color options if present
+    if (response.hairColors.isNotEmpty) {
+      messages.add(ChatMessage(
+        id: _nextId(),
+        isUser: false,
+        type: ChatMessageType.hairColors,
+        hairColors: response.hairColors,
+      ));
+    }
+
+    // Add generated image as separate message if present
+    if (response.imageUrl != null) {
+      messages.add(ChatMessage(
+        id: _nextId(),
+        isUser: false,
+        type: ChatMessageType.image,
+        imageUrl: response.imageUrl,
+      ));
+    }
+
+    // If backend says image is being generated, show shimmer placeholder
+    if (response.generatingImage) {
+      emit(state.copyWith(
+        messages: messages,
+        isTyping: false,
+        isGeneratingImage: true,
+      ));
+      _waitForGeneratedImage();
+      return;
     }
 
     emit(state.copyWith(
-      messages: [...state.messages, ...newMessages],
+      messages: messages,
       isTyping: false,
+      isGeneratingImage: false,
     ));
+  }
+
+  /// Call the dedicated generate endpoint to produce the image
+  Future<void> _waitForGeneratedImage() async {
+    try {
+      final response = await _apiService.generateImage(_sessionId!);
+
+      final messages = <ChatMessage>[...state.messages];
+
+      if (response.imageUrl != null) {
+        messages.add(ChatMessage(
+          id: _nextId(),
+          isUser: false,
+          type: ChatMessageType.image,
+          imageUrl: response.imageUrl,
+        ));
+      }
+
+      emit(state.copyWith(
+        messages: messages,
+        isGeneratingImage: false,
+      ));
+    } catch (e) {
+      if (kDebugMode) debugPrint('Image generation error: $e');
+      emit(state.copyWith(
+        isGeneratingImage: false,
+        error: 'Failed to generate image',
+      ));
+    }
   }
 }
