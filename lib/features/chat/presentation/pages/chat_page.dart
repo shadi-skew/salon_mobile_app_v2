@@ -48,22 +48,29 @@ class _ChatPageState extends State<ChatPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: const Color(0xFFF8FAFA),
       appBar: AppBar(
         titleSpacing: 0,
         title: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
             Container(
-              width: 36,
-              height: 36,
+              width: 38,
+              height: 38,
               decoration: BoxDecoration(
                 gradient: const LinearGradient(
-                  colors: [Color(0xFF0F6A6A), Color(0xFF1A8A8A)],
+                  colors: [Color(0xFF0D8B8B), Color(0xFF14ABAB)],
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
                 ),
-                borderRadius: BorderRadius.circular(12),
+                borderRadius: BorderRadius.circular(13),
+                boxShadow: [
+                  BoxShadow(
+                    color: const Color(0xFF0D8B8B).withValues(alpha: 0.25),
+                    blurRadius: 8,
+                    offset: const Offset(0, 2),
+                  ),
+                ],
               ),
               child: const Icon(
                 Icons.auto_awesome,
@@ -72,24 +79,44 @@ class _ChatPageState extends State<ChatPage> {
               ),
             ),
             const SizedBox(width: 12),
-            const Column(
+            Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
+                const Text(
                   'Salon Assistant',
                   style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w700,
                     letterSpacing: -0.3,
+                    color: Color(0xFF1A1A2E),
                   ),
                 ),
-                Text(
-                  'Online',
-                  style: TextStyle(
-                    fontSize: 12,
-                    fontWeight: FontWeight.w400,
-                    color: Color(0xFF4CAF50),
-                  ),
+                Row(
+                  children: [
+                    Container(
+                      width: 7,
+                      height: 7,
+                      decoration: BoxDecoration(
+                        color: const Color(0xFF34C759),
+                        shape: BoxShape.circle,
+                        boxShadow: [
+                          BoxShadow(
+                            color: const Color(0xFF34C759).withValues(alpha: 0.4),
+                            blurRadius: 4,
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(width: 5),
+                    const Text(
+                      'Online',
+                      style: TextStyle(
+                        fontSize: 12,
+                        fontWeight: FontWeight.w500,
+                        color: Color(0xFF34C759),
+                      ),
+                    ),
+                  ],
                 ),
               ],
             ),
@@ -103,7 +130,7 @@ class _ChatPageState extends State<ChatPage> {
           preferredSize: const Size.fromHeight(0.5),
           child: Container(
             height: 0.5,
-            color: Colors.grey.shade200,
+            color: Colors.grey.shade100,
           ),
         ),
       ),
@@ -122,15 +149,15 @@ class _ChatPageState extends State<ChatPage> {
                       vertical: 5,
                     ),
                     decoration: BoxDecoration(
-                      color: Colors.grey.shade100,
+                      color: const Color(0xFF0D8B8B).withValues(alpha: 0.06),
                       borderRadius: BorderRadius.circular(12),
                     ),
-                    child: Text(
+                    child: const Text(
                       'Today',
                       style: TextStyle(
                         fontSize: 12,
-                        color: Colors.grey.shade500,
-                        fontWeight: FontWeight.w500,
+                        color: Color(0xFF0D8B8B),
+                        fontWeight: FontWeight.w600,
                       ),
                     ),
                   ),

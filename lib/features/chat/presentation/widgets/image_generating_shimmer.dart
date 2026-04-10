@@ -16,9 +16,20 @@ class ImageGeneratingShimmer extends StatelessWidget {
             width: 32,
             height: 32,
             margin: const EdgeInsets.only(right: 8, bottom: 2),
-            decoration: const BoxDecoration(
-              color: Color(0xFF0F6A6A),
+            decoration: BoxDecoration(
+              gradient: const LinearGradient(
+                colors: [Color(0xFF0D8B8B), Color(0xFF14ABAB)],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+              ),
               shape: BoxShape.circle,
+              boxShadow: [
+                BoxShadow(
+                  color: const Color(0xFF0D8B8B).withValues(alpha: 0.3),
+                  blurRadius: 6,
+                  offset: const Offset(0, 2),
+                ),
+              ],
             ),
             child: const Icon(
               Icons.auto_awesome,
@@ -75,7 +86,7 @@ class ImageGeneratingShimmer extends StatelessWidget {
                             height: 16,
                             child: CircularProgressIndicator(
                               strokeWidth: 2,
-                              color: const Color(0xFF0F6A6A).withValues(alpha: 0.6),
+                              color: const Color(0xFF0D8B8B).withValues(alpha: 0.6),
                             ),
                           ),
                           const SizedBox(width: 10),

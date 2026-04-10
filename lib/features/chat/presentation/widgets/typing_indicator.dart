@@ -51,9 +51,9 @@ class _TypingIndicatorState extends State<TypingIndicator>
         alignment: Alignment.centerLeft,
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 14),
-          decoration: BoxDecoration(
-            color: const Color(0xFFF2F2F7),
-            borderRadius: const BorderRadius.only(
+          decoration: const BoxDecoration(
+            color: Color(0xFFEFF3F4),
+            borderRadius: BorderRadius.only(
               topLeft: Radius.circular(20),
               topRight: Radius.circular(20),
               bottomRight: Radius.circular(20),
@@ -76,8 +76,8 @@ class _TypingIndicatorState extends State<TypingIndicator>
                         height: 9,
                         decoration: BoxDecoration(
                           color: Color.lerp(
-                            const Color(0xFFBBBBBB),
-                            const Color(0xFF0F6A6A),
+                            const Color(0xFFC0CACA),
+                            const Color(0xFF0D8B8B),
                             value,
                           ),
                           shape: BoxShape.circle,

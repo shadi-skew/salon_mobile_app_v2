@@ -2,8 +2,8 @@ import 'dart:io';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:salon_mobile_app_v2/core/resources/color_manager.dart';
 import 'package:salon_mobile_app_v2/features/chat/data/models/chat_models.dart';
+import 'package:salon_mobile_app_v2/features/chat/presentation/pages/image_viewer_page.dart';
 
 class ChatBubble extends StatelessWidget {
   const ChatBubble({super.key, required this.message});
@@ -45,9 +45,20 @@ class _TextBubble extends StatelessWidget {
               width: 32,
               height: 32,
               margin: const EdgeInsets.only(right: 8, bottom: 2),
-              decoration: const BoxDecoration(
-                color: Color(0xFF0F6A6A),
+              decoration: BoxDecoration(
+                gradient: const LinearGradient(
+                  colors: [Color(0xFF0D8B8B), Color(0xFF14ABAB)],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                ),
                 shape: BoxShape.circle,
+                boxShadow: [
+                  BoxShadow(
+                    color: const Color(0xFF0D8B8B).withValues(alpha: 0.3),
+                    blurRadius: 6,
+                    offset: const Offset(0, 2),
+                  ),
+                ],
               ),
               child: const Icon(
                 Icons.auto_awesome,
@@ -61,20 +72,34 @@ class _TextBubble extends StatelessWidget {
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
               decoration: BoxDecoration(
-                color: isUser
-                    ? const Color(0xFF0F6A6A)
-                    : const Color(0xFFF2F2F7),
+                gradient: isUser
+                    ? const LinearGradient(
+                        colors: [Color(0xFF0D8B8B), Color(0xFF0A7A7A)],
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                      )
+                    : null,
+                color: isUser ? null : const Color(0xFFEFF3F4),
                 borderRadius: BorderRadius.only(
                   topLeft: const Radius.circular(20),
                   topRight: const Radius.circular(20),
                   bottomLeft: Radius.circular(isUser ? 20 : 6),
                   bottomRight: Radius.circular(isUser ? 6 : 20),
                 ),
+                boxShadow: isUser
+                    ? [
+                        BoxShadow(
+                          color: const Color(0xFF0D8B8B).withValues(alpha: 0.2),
+                          blurRadius: 8,
+                          offset: const Offset(0, 2),
+                        ),
+                      ]
+                    : null,
               ),
               child: Text(
                 message.text ?? '',
                 style: TextStyle(
-                  color: isUser ? Colors.white : ColorManager.blackTitle,
+                  color: isUser ? Colors.white : const Color(0xFF1A1A2E),
                   fontSize: 15,
                   height: 1.45,
                   letterSpacing: -0.1,
@@ -114,9 +139,20 @@ class _ImageBubble extends StatelessWidget {
               width: 32,
               height: 32,
               margin: const EdgeInsets.only(right: 8, bottom: 2),
-              decoration: const BoxDecoration(
-                color: Color(0xFF0F6A6A),
+              decoration: BoxDecoration(
+                gradient: const LinearGradient(
+                  colors: [Color(0xFF0D8B8B), Color(0xFF14ABAB)],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                ),
                 shape: BoxShape.circle,
+                boxShadow: [
+                  BoxShadow(
+                    color: const Color(0xFF0D8B8B).withValues(alpha: 0.3),
+                    blurRadius: 6,
+                    offset: const Offset(0, 2),
+                  ),
+                ],
               ),
               child: const Icon(
                 Icons.auto_awesome,
@@ -140,13 +176,28 @@ class _ImageBubble extends StatelessWidget {
                   ),
                 ],
               ),
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(20),
-                child: _buildImage(),
+              child: GestureDetector(
+                onTap: () => _openViewer(context),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(20),
+                  child: _buildImage(),
+                ),
               ),
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  void _openViewer(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (_) => ImageViewerPage(
+          imageUrl: message.imageUrl,
+          imagePath: message.imagePath,
+        ),
       ),
     );
   }
@@ -165,7 +216,7 @@ class _ImageBubble extends StatelessWidget {
           child: const Center(
             child: CircularProgressIndicator(
               strokeWidth: 2,
-              color: Color(0xFF0F6A6A),
+              color: Color(0xFF0D8B8B),
             ),
           ),
         ),
