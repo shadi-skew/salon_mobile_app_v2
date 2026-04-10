@@ -171,13 +171,13 @@ class _ChatInputFieldState extends State<ChatInputField> {
             child: IconButton(
               onPressed: widget.enabled ? _pickImage : null,
               icon: const Icon(Icons.camera_alt_rounded, size: 21),
-              color: const Color(0xFF0D8B8B),
+              color: const Color(0xFF34ACB7),
               disabledColor: Colors.grey.shade400,
               padding: const EdgeInsets.all(8),
               constraints: const BoxConstraints(),
               style: IconButton.styleFrom(
                 backgroundColor: widget.enabled
-                    ? const Color(0xFF0D8B8B).withValues(alpha: 0.08)
+                    ? const Color(0xFF34ACB7).withValues(alpha: 0.08)
                     : Colors.transparent,
                 shape: const CircleBorder(),
               ),
@@ -209,7 +209,7 @@ class _ChatInputFieldState extends State<ChatInputField> {
                   letterSpacing: -0.1,
                 ),
                 filled: true,
-                fillColor: const Color(0xFFF4F6F6),
+                fillColor: const Color(0xFFF2F9FA),
                 isDense: true,
                 contentPadding: const EdgeInsets.symmetric(
                   horizontal: 16,
@@ -243,7 +243,7 @@ class _ChatInputFieldState extends State<ChatInputField> {
               decoration: BoxDecoration(
                 gradient: (widget.enabled && _hasText)
                     ? const LinearGradient(
-                        colors: [Color(0xFF0D8B8B), Color(0xFF0A7A7A)],
+                        colors: [Color(0xFF34ACB7), Color(0xFF2A8F98)],
                         begin: Alignment.topLeft,
                         end: Alignment.bottomRight,
                       )
@@ -255,7 +255,7 @@ class _ChatInputFieldState extends State<ChatInputField> {
                 boxShadow: (widget.enabled && _hasText)
                     ? [
                         BoxShadow(
-                          color: const Color(0xFF0D8B8B).withValues(alpha: 0.3),
+                          color: const Color(0xFF34ACB7).withValues(alpha: 0.3),
                           blurRadius: 6,
                           offset: const Offset(0, 2),
                         ),
@@ -296,22 +296,22 @@ class _PickerOption extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.symmetric(vertical: 20),
         decoration: BoxDecoration(
-          color: const Color(0xFF0D8B8B).withValues(alpha: 0.06),
+          color: const Color(0xFF34ACB7).withValues(alpha: 0.06),
           borderRadius: BorderRadius.circular(16),
           border: Border.all(
-            color: const Color(0xFF0D8B8B).withValues(alpha: 0.12),
+            color: const Color(0xFF34ACB7).withValues(alpha: 0.12),
           ),
         ),
         child: Column(
           children: [
-            Icon(icon, color: const Color(0xFF0D8B8B), size: 32),
+            Icon(icon, color: const Color(0xFF34ACB7), size: 32),
             const SizedBox(height: 8),
             Text(
               label,
               style: const TextStyle(
                 fontSize: 14,
                 fontWeight: FontWeight.w600,
-                color: Color(0xFF0D8B8B),
+                color: Color(0xFF34ACB7),
               ),
             ),
           ],

@@ -52,7 +52,7 @@ class _TypingIndicatorState extends State<TypingIndicator>
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 14),
           decoration: const BoxDecoration(
-            color: Color(0xFFEFF3F4),
+            color: Color(0xFFE8F6F8),
             borderRadius: BorderRadius.only(
               topLeft: Radius.circular(20),
               topRight: Radius.circular(20),
@@ -76,8 +76,8 @@ class _TypingIndicatorState extends State<TypingIndicator>
                         height: 9,
                         decoration: BoxDecoration(
                           color: Color.lerp(
-                            const Color(0xFFC0CACA),
-                            const Color(0xFF0D8B8B),
+                            const Color(0xFFB9EAEF),
+                            const Color(0xFF34ACB7),
                             value,
                           ),
                           shape: BoxShape.circle,

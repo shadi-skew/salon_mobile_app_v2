@@ -323,7 +323,7 @@ class _CameraPageState extends State<CameraPage> with WidgetsBindingObserver {
                   child: Container(
                     height: 52,
                     decoration: BoxDecoration(
-                      color: const Color(0xFF0D8B8B),
+                      color: const Color(0xFF34ACB7),
                       borderRadius: BorderRadius.circular(26),
                     ),
                     child: const Center(

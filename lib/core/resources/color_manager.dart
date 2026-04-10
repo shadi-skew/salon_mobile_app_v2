@@ -7,13 +7,13 @@ class ColorManager {
   // Transparent Colors
   static const Color transparent = Colors.transparent;
 
-  // Primary Colors
-  static const Color primary = Color(0xFF0F6A6A);
-  static const Color primaryDark = Color(0xFF0A4F4F);
-  static const Color primaryLight = Color(0xFF3D8E8E);
+  // Primary Colors — turquoise & coral palette
+  static const Color primary = Color(0xFF34ACB7);
+  static const Color primaryDark = Color(0xFF2A8F98);
+  static const Color primaryLight = Color(0xFFB9EAEF);
 
   // Secondary Colors
-  static const Color secondary = Color(0xFFE87156);
+  static const Color secondary = Color(0xFFFF7A5C);
 
   // Neutral Colors
   static const Color white = Color(0xFFFFFFFF);
