@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:salon_mobile_app_v2/core/resources/app_routes_names.dart';
 import 'package:salon_mobile_app_v2/core/resources/color_manager.dart';
 
 class HomePage extends StatelessWidget {
@@ -177,7 +179,7 @@ class HomePage extends StatelessWidget {
                 title: 'Hairstyle Change',
                 subtitle: 'Get AI-powered hairstyle recommendations',
                 color: const Color(0xFFFF7A5C),
-                onTap: onNavigateToChat,
+                onTap: () => context.pushNamed(AppRoutesNames.aiStylist),
               ),
               const SizedBox(height: 12),
               _ServiceCard(

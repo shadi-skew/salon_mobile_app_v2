@@ -9,4 +9,7 @@ class AppRoutesNames {
   static const String home = 'home';
   static const String profile = 'profile';
   static const String settings = 'settings';
+  static const String aiStylist = 'aiStylist';
+  static const String hairstyleDetail = 'hairstyleDetail';
+  static const String styleResult = 'styleResult';
 }
